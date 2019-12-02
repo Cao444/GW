@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>自定义动画</title>
+	<!-- animate 动画	 -->
+	<script type="text/javascript" src="../JS/jquery.min.js"></script>
+	<style type="text/css">
+		body{position:relative; }
+		#box{background-color: red;color: #fff;width: 200px;height: 200px;position: absolute;}
+
+	</style>
+</head>
+<body>
+	<button id="btn" value="控制动画">控制动画</button>
+	<br>
+	<div id="box">
+		自定义动画 <br>
+		zzzzzzzzzzzzzzzz
+	</div>
+</body>
+	<script type="text/javascript">
+		$("#btn").click(function () {
+			// $("#box").animate({"width":"600px"},1000,function(){alert("宽度完")});
+			// $("#box").animate({"height":"600px"},1000);
+			// $("#box").animate({"fontSize":"30px"},1000);
+			
+			// $("#box").animate({"width":"600px","height":"600px","fontSize":"30px","opacity":0.5},1000,function(){alert("完!!!")});
+			
+			$("#box").animate({"width":"+=100px"},1000,aa)
+		})
+
+		// animate()方法可以创建我们我的自定义动画，满座更多复杂的要求
+		// animate()方法必传参数只有一个，还有两个可选参数就是速度和回调函数。、
+		// 语法格式，元素名。animate("CSS样式以键值对的方式"，速度单位是毫秒，回调函数)
+
+		function aa() {
+			$(this).animate({"height":"+=100px"},1000);
+			$(this).animate({"fontSize":"+=10px"},1000);
+		}
+	</script>
+</html>

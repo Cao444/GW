@@ -1,0 +1,51 @@
+﻿@model IEnumerable<GGW.Models.adminM>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/icon/css/bootstrap.min.css" rel="stylesheet" />
+<script src="~/icon/js/bootstrap.min.js"></script>
+<script src="~/icon/js/jquery.min.js"></script>
+<link href="~/Content/pagination.css" rel="stylesheet" />
+<script src="~/jq/pagination.js"></script>
+<link href="~/Content/datatable.css" rel="stylesheet" />
+<script src="~/jq/datatable.js"></script>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="row" style="padding-top:10px;">
+            <a href="@Url.Action("Index","Admin")"><i class="glyphicon glyphicon-home"></i>&nbsp;首页</a><i style="color:blue">>>></i><a href="@Url.Action("Index","Admin")"><i class=""></i>编辑个人信息</a>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.adminName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.adminPwd)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.adminName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.adminPwd)
+                    </td>
+                    <td>
+                        @Html.ActionLink("编辑", "Edit", new { id = item.adminID }) |
+                        @Html.ActionLink("删除", "Delete", new { id = item.adminID })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

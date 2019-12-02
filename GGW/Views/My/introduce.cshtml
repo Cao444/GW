@@ -1,0 +1,205 @@
+﻿
+@{
+    ViewBag.Title = "introduce";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/jq/jquery.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<style>
+    #con {
+        width: 100%;
+        height: 460px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .item {
+        position: absolute;
+    }
+
+    #tabs {
+        position: absolute;
+        right: 30px;
+        bottom: 20px;
+        list-style: none;
+    }
+
+    .tab {
+        float: left;
+        margin-right: 10px;
+        width: 6px;
+        height: 6px;
+        border: 3px solid rgba(184,178,182,.8);
+        border-radius: 50%;
+        background: #989196;
+        cursor: pointer;
+    }
+
+    .active {
+        background: #fff;
+        border-color: #999497;
+    }
+
+    .btn {
+        position: absolute;
+        top: 50%;
+        margin-top: -35px;
+        width: 40px;
+        height: 70px;
+        color: #d6d3d5;
+        font-size: 36px;
+        line-height: 70px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            background-color: rgba(184,178,182,.8);
+            color: #fff;
+        }
+
+    .prev {
+        position: absolute;
+        left: 0px;
+        border-radius: 0 5px 5px 0;
+    }
+
+    .next {
+        position: absolute;
+        right: 0;
+        border-radius: 5px 0 0 5px;
+    }
+
+    .col-3 ul {
+        list-style: none;
+        
+    }
+
+        .col-3 ul li {
+            height: 40px;
+            width: 150px;
+            line-height: 40px;
+            padding-left:15px;
+        }
+        .col-3 ul li a:hover{
+            text-decoration:none
+        }
+</style>
+
+<div id="con">
+    <a class="item" href="#"><img src="~/image/banner-1.jpg" style="width: 100%;height: 460px" /></a>
+    <a class="item" href="#"><img src="~/image/banner-2.jpg" style="width: 100%;height: 460px" /></a>
+
+    <div class="btn prev" style="line-height:50px;">&lt;</div>
+    <div class="btn next" style="line-height:50px;">&gt;</div>
+
+    <ul id="tabs">
+        <li class="tab active"></li>
+        <li class="tab"></li>
+    </ul>
+</div>
+
+<div class="container-fluid" style="padding-top:20px;background-color:#eae3e3">
+    <div class="row">
+        <div class="col-3 box-ul" style="padding-left:120px;">
+            <ul>
+                <li>@Html.ActionLink("关于我们","Index","My")</li>
+                <li style="background-color:rgba(255, 200, 237, 0.80);border-radius:10px;font-size:24px;">@Html.ActionLink("公司简介", "introduce", "My")</li>
+                <li>@Html.ActionLink("资质证书", "", "My")</li>
+                <li>@Html.ActionLink("发展历程", "", "My")</li>
+                <li>@Html.ActionLink("企业文化", "culture", "My")</li>
+            </ul>
+        </div>
+        <div class="col-7" style="padding-left:120px;">
+            <p>株洲市包满意服务有限公司成立于2003年，是一家集装饰设计、施工、家居软装等为一体的整体家居集团企业。</p>
+            <p>
+                包满意品牌自诞生以来，就确立了“爱与责任”的价值观、“标准、透明、智能”的经营理念，专注于家庭装修装饰领域，致力于改变传统家装行家装不规范，不透明的现状，推动家装行业透明化、标准化发展。为改变传统家装不透明的弊端、带给消费者满意的装修体验，千思质造家不断推陈出新，为家装行业带来了多个优化之举。推出“质造家”全装模式。采用四大知识产权技术，为消费者提供包括制安、主材、家具、配饰在内的全装解决方案，实现拎包即入住。推行“全透明化装修体系”，从价格、选材、工艺到价格全部实施透明化管理，将价格不透明的传统家装，改变成明码标价的标准化家装；推出“装修6不限”等诚信举措，并通过实景样板房体验、施工工艺展示厅、ERP管理系统，让客户参与到家装过程中，把繁琐的装修过程变得透明、合理、自由、便捷。
+            </p>
+            <p> 迄今为止，千思营业网点已覆盖长沙、株洲、郴州、衡阳、邵阳、怀化以及武汉等全省各地。已为100000户家庭提供专业装修服务。获得全国住宅装饰装修行业企业、品牌价值家装企业等殊荣。 未来，千思将持续致力于为中国打造健康的人居环境，推动中国家装的健康发展。</p>
+
+        </div>
+        <div class="col-2">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        var i = 0;
+        var timer;
+
+        //用jquery方法设置第一张图片显示，其余隐藏
+        $('.item').eq(0).show().siblings('.item').hide();
+
+        //调用showTime()函数（轮播函数）
+        showTime();
+
+        //当鼠标经过下面的数字时，触发两个事件（鼠标悬停和鼠标离开）
+        $('.tab').hover(function () {
+            //获取当前i的值，并显示，同时还要清除定时器
+            i = $(this).index();
+            Show();
+            clearInterval(timer);
+        }, function () {
+            //
+            showTime();
+        });
+
+        //鼠标点击左侧的箭头
+        $('.prev').click(function () {
+            clearInterval(timer);
+            if (i == 0) {
+                i = 2;//注意此时i的值
+            }
+            i--;
+            Show();
+            showTime();
+        });
+
+        //鼠标点击右侧的箭头
+        $('.next').click(function () {
+            clearInterval(timer);
+            if (i == 2) {
+                i = 1;//注意此时i的值
+            }
+            i++;
+            Show();
+            showTime();
+        });
+
+
+        //创建一个showTime函数
+        function showTime() {
+            //定时器
+            timer = setInterval(function () {
+                //调用一个Show()函数
+                Show();
+                i++;
+                //当图片是最后一张的后面时，设置图片为第一张
+                if (i == 3) {
+                    i = 0;
+                }
+            }, 2000);
+        }
+
+
+        //创建一个Show函数
+        function Show() {
+            //在这里可以用其他jquery的动画
+            $('.item').eq(i).fadeIn(300).siblings('.item').fadeOut(300);
+
+            //给.tab创建一个新的Class为其添加一个新的样式，并且要在css代码中设置该样式
+            $('.tab').eq(i).addClass('active').siblings('.tab').removeClass('active');
+
+        }
+
+    })
+</script>
+

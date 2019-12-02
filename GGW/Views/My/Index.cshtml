@@ -1,0 +1,195 @@
+﻿
+@{
+
+
+                ViewBag.Title = "Index";
+                Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/jq/jquery.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<style>
+    #con {
+        width: 100%;
+        height: 460px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .item {
+        position: absolute;
+    }
+
+    #tabs {
+        position: absolute;
+        right: 30px;
+        bottom: 20px;
+        list-style: none;
+    }
+
+    .tab {
+        float: left;
+        margin-right: 10px;
+        width: 6px;
+        height: 6px;
+        border: 3px solid rgba(184,178,182,.8);
+        border-radius: 50%;
+        background: #989196;
+        cursor: pointer;
+    }
+
+    .active {
+        background: #fff;
+        border-color: #999497;
+    }
+
+    .btn {
+        position: absolute;
+        top: 50%;
+        margin-top: -35px;
+        width: 40px;
+        height: 70px;
+        color: #d6d3d5;
+        font-size: 36px;
+        line-height: 70px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            background-color: rgba(184,178,182,.8);
+            color: #fff;
+        }
+
+    .prev {
+        position: absolute;
+        left: 0px;
+        border-radius: 0 5px 5px 0;
+    }
+
+    .next {
+        position: absolute;
+        right: 0;
+        border-radius: 5px 0 0 5px;
+    }
+    .col-3 ul{
+        list-style:none
+    }
+        .col-3 ul li {
+            height: 40px;
+            width: 130px;
+            line-height: 40px;
+            padding-left: 15px;
+        }
+</style>
+
+<div id="con">
+    <a class="item" href="#"><img src="~/image/banner-1.jpg" style="width: 100%;height: 460px" /></a>
+    <a class="item" href="#"><img src="~/image/banner-2.jpg" style="width: 100%;height: 460px" /></a>
+
+    <div class="btn prev" style="line-height:50px;">&lt;</div>
+    <div class="btn next" style="line-height:50px;">&gt;</div>
+
+    <ul id="tabs">
+        <li class="tab active"></li>
+        <li class="tab"></li>
+    </ul>
+</div>
+
+<div class="container-fluid" style="padding-top:20px;background-color:#eae3e3">
+    <div class="row">
+        <div class="col-3" style="padding-left:120px;">
+            <ul>
+                <li style="background-color:rgba(255, 200, 237, 0.80);border-radius:10px;font-size:24px;">@Html.ActionLink("关于我们","Index","My")</li>
+                <li>@Html.ActionLink("公司简介", "introduce", "My")</li>
+                <li>@Html.ActionLink("资质证书","","My")</li>
+                <li>@Html.ActionLink("发展历程","","My")</li>
+                <li>@Html.ActionLink("企业文化","","My")</li>
+            </ul>
+        </div>
+        <div class="col-7" style="padding-left:120px;">
+            <p>&nbsp;&nbsp;PageAdmin网站管理系统V4.0，基于当前最流行的MVC框架全新开发，强大的后台管理功能，良好的用户操作体验，开发式的功能扩展，让各种类型网站制作更加便捷和灵活。</p><p>PageAdmin网站管理系统 v4.0和V3.0主要区别：</p><p>1、3.0采用微软webform框架，至从微软推出mvc框架后，已经放弃了webform框架，为顺应未来最新的web潮流，v4.0采用mvc框架完全重构。</p><p>2、用户体验：4.0所有post都前部采用ajax提交，体验和安全性都更好，完全重构了Ui界面，用户操作性更便捷。</p><p>3、模板分离：4.0做模板需要先制作html文件，在模板文件中通过web最流行的razor语法调取后台数据，模板不再受到系统内置框架限制，更自由灵活。</p><p>4、多域名绑定：4.0的多站点绑定不同域名，不再需要再iis上建多个iis站点，多语言，多站点站群更轻松实现。</p><p>5、自定义表单：4.0自定义字段中增加了附属表，一对一附属表，一对多附属表的字段支持。</p><p>6、插件功能：4.0增加了插件功能，系统采用开放式框架，功能扩展都通过插件来动态扩展，更方便的接入微信、小程序等第三方应用。</p><p>7、缓存及负载：3.0采用生成静态来提升速度和负载，4.0采用最新的http缓存+数据库缓存+文件缓存等技术来替代，更容易维护，更节省空间。<br /></p><p>8、系统安全性：4.0采用参数化和Orm框架，从源头杜绝了sql注入这类高风险漏洞。</p><p>9、附件控制：3.0上传的编辑器附件再删除文章或产品后不能同步删除，时间久了留下各种冗余，4.0对信息发布的任何一个附件都精确控制，保证每个冗余文件都可以被清理掉。</p><p>......</p><br />
+
+        </div>
+        <div class="col-2">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        var i = 0;
+        var timer;
+
+        //用jquery方法设置第一张图片显示，其余隐藏
+        $('.item').eq(0).show().siblings('.item').hide();
+
+        //调用showTime()函数（轮播函数）
+        showTime();
+
+        //当鼠标经过下面的数字时，触发两个事件（鼠标悬停和鼠标离开）
+        $('.tab').hover(function () {
+            //获取当前i的值，并显示，同时还要清除定时器
+            i = $(this).index();
+            Show();
+            clearInterval(timer);
+        }, function () {
+            //
+            showTime();
+        });
+
+        //鼠标点击左侧的箭头
+        $('.prev').click(function () {
+            clearInterval(timer);
+            if (i == 0) {
+                i = 2;//注意此时i的值
+            }
+            i--;
+            Show();
+            showTime();
+        });
+
+        //鼠标点击右侧的箭头
+        $('.next').click(function () {
+            clearInterval(timer);
+            if (i == 2) {
+                i = 1;//注意此时i的值
+            }
+            i++;
+            Show();
+            showTime();
+        });
+
+
+        //创建一个showTime函数
+        function showTime() {
+            //定时器
+            timer = setInterval(function () {
+                //调用一个Show()函数
+                Show();
+                i++;
+                //当图片是最后一张的后面时，设置图片为第一张
+                if (i == 3) {
+                    i = 0;
+                }
+            }, 2000);
+        }
+
+
+        //创建一个Show函数
+        function Show() {
+            //在这里可以用其他jquery的动画
+            $('.item').eq(i).fadeIn(300).siblings('.item').fadeOut(300);
+
+            //给.tab创建一个新的Class为其添加一个新的样式，并且要在css代码中设置该样式
+            $('.tab').eq(i).addClass('active').siblings('.tab').removeClass('active');
+        }
+
+
+    })
+</script>

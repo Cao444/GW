@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<meta name="description" content="Ela Admin - HTML5 Admin Template">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="~/assets/css/normalize.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/assets/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/assets/css/themify-icons.css">
+<link rel="stylesheet" href="~/assets/css/pe-icon-7-filled.css">
+<link rel="stylesheet" href="~/assets/css/flag-icon.min.css"><link rel="stylesheet" href="assets/css/cs-skin-elastic.css">
+<link rel="stylesheet" href="~/assets/css/style.css">
+<link href="~/assets/weather/css/weather-icons.css" rel="stylesheet" />
+<link href="~/assets/calendar/fullcalendar.css" rel="stylesheet" />
+
+<link href="~/assets/css/charts/chartist.min.css" rel="stylesheet">
+<link href="~/assets/css/lib/vector-map/jqvmap.min.css" rel="stylesheet">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div style="position:relative">
+        @Html.Partial("~/Views/Shared/adminF.cshtml")
+    </div>
+    <div>
+        @Html.Partial("~/Views/Shared/adminH.cshtml")
+    </div>
+    <div class="pull-right" style="width:75%;">
+        @RenderBody()
+    </div>
+</body>
+</html>

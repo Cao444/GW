@@ -1,0 +1,189 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/jq/jquery.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<style>
+    #con {
+        width: 100%;
+        height: 460px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .item {
+        position: absolute;
+    }
+
+    #tabs {
+        position: absolute;
+        right: 30px;
+        bottom: 20px;
+        list-style: none;
+    }
+
+    .tab {
+        float: left;
+        margin-right: 10px;
+        width: 6px;
+        height: 6px;
+        border: 3px solid rgba(184,178,182,.8);
+        border-radius: 50%;
+        background: #989196;
+        cursor: pointer;
+    }
+
+    .active {
+        background: #fff;
+        border-color: #999497;
+    }
+
+    .btn {
+        position: absolute;
+        top: 50%;
+        margin-top: -35px;
+        width: 40px;
+        height: 70px;
+        color: #d6d3d5;
+        font-size: 36px;
+        line-height: 70px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            background-color: rgba(184,178,182,.8);
+            color: #fff;
+        }
+
+    .prev {
+        position: absolute;
+        left: 0px;
+        border-radius: 0 5px 5px 0;
+    }
+
+    .next {
+        position: absolute;
+        right: 0;
+        border-radius: 5px 0 0 5px;
+    }
+    .col-3 ul {
+        list-style: none
+    }
+
+        .col-3 ul li {
+            height: 40px;
+            width: 130px;
+            line-height: 40px;
+        }
+</style>
+
+<div id="con">
+    <a class="item" href="#"><img src="~/image/banner-1.jpg" style="width: 100%;height: 460px" /></a>
+    <a class="item" href="#"><img src="~/image/banner-2.jpg" style="width: 100%;height: 460px" /></a>
+
+    <div class="btn prev" style="line-height:50px;">&lt;</div>
+    <div class="btn next" style="line-height:50px;">&gt;</div>
+
+    <ul id="tabs">
+        <li class="tab active"></li>
+        <li class="tab"></li>
+    </ul>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3" style="padding-left:120px;">
+            <ul>
+                <li style="background-color:#4a0f0f;color:#fff"><h3>招商加盟</h3></li>
+                <li>加盟优势</li>
+                <li>加盟条件</li>
+                <li>加盟流程</li>
+                <li>加盟政策</li>
+            </ul>
+        </div>
+        <div class="col-9" style="padding-left:120px;">
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公司自主研发多项前沿技术，拥有超高层工程、基础设施工程、绿色工程、石油化工等多类工程施工核心技术，累计取得科技成果200多项：开发的“装配式低位顶升模架体系”、“超宽预应力混凝土斜拉桥关键技术”中关于钢锚梁设计与施工等多项技术达国际领先水平；独立研发的“基于生态建设领域综合施工技术”、“地下空间逆作法施工集成技术”“大型化工储罐库区工程施工集成技术”达到了国际先进水平；“超宽幅斜拉桥H型主塔施工技术”、“基于石化罐区工程的工业综合自动化系统应用关键技术”、“敏感地区下城市共同管沟施工扰动控制技术研究”、“地源热泵地埋管施工可靠性研究及施工关键技术”等多项技术达到国内领先水平。</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公司拥有国家专利技术98项,其中发明专利17项，近8年取得省部级工法68项，国家级工法6项，荣获省部级科技进步奖29项。主编的关于盐渍土地区建设我国第一本国家标准——《盐渍土地区建筑技术规范》，内容总体达到国际先进水平。</p>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var i = 0;
+        var timer;
+
+        //用jquery方法设置第一张图片显示，其余隐藏
+        $('.item').eq(0).show().siblings('.item').hide();
+
+        //调用showTime()函数（轮播函数）
+        showTime();
+
+        //当鼠标经过下面的数字时，触发两个事件（鼠标悬停和鼠标离开）
+        $('.tab').hover(function () {
+            //获取当前i的值，并显示，同时还要清除定时器
+            i = $(this).index();
+            Show();
+            clearInterval(timer);
+        }, function () {
+            //
+            showTime();
+        });
+
+        //鼠标点击左侧的箭头
+        $('.prev').click(function () {
+            clearInterval(timer);
+            if (i == 0) {
+                i = 2;//注意此时i的值
+            }
+            i--;
+            Show();
+            showTime();
+        });
+
+        //鼠标点击右侧的箭头
+        $('.next').click(function () {
+            clearInterval(timer);
+            if (i == 2) {
+                i = 1;//注意此时i的值
+            }
+            i++;
+            Show();
+            showTime();
+        });
+
+
+        //创建一个showTime函数
+        function showTime() {
+            //定时器
+            timer = setInterval(function () {
+                //调用一个Show()函数
+                Show();
+                i++;
+                //当图片是最后一张的后面时，设置图片为第一张
+                if (i == 2) {
+                    i = 0;
+                }
+            }, 2000);
+        }
+
+
+        //创建一个Show函数
+        function Show() {
+            //在这里可以用其他jquery的动画
+            $('.item').eq(i).fadeIn(300).siblings('.item').fadeOut(300);
+
+            //给.tab创建一个新的Class为其添加一个新的样式，并且要在css代码中设置该样式
+            $('.tab').eq(i).addClass('active').siblings('.tab').removeClass('active');
+
+        }
+    })
+</script>
+

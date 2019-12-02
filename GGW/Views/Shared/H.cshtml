@@ -1,0 +1,85 @@
+﻿<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.0.0.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<style>
+
+    .col-4 {
+        text-align: center;
+    }
+
+    .titl ul {
+        list-style: none;
+    }
+
+        .titl ul li {
+            height:40px;
+            text-align:center;
+            width:70px;
+            float: left;
+            margin-left: 50px;
+            margin-top: 50px;
+        }
+
+    .titl a {
+        color: #b0afaf;
+    }
+
+        .titl a:hover {
+            color: #000000;
+            text-decoration: none;
+        }
+
+    #box-ul {
+        width: 120px;
+        height: 50px;
+        border: 1px solid red;
+        position: relative;
+        margin: -50px auto 0px auto
+    }
+
+        #box-ul ul li {
+            float: left;
+            color: #fff;
+        }
+    .show-hr {
+        border: 1.5px solid #999;
+        border-radius: 1.5px;
+        display: none;
+        margin-top: 5px;
+        position: relative;
+        width: 0px;
+        
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <a href="#">
+                <img src="~/image/logo.png" alt="Alternate Text" />
+            </a>
+        </div>
+        <div class="col-8 titl">
+            <ul>
+                <li>
+                    @Html.ActionLink("首页", "Index", "Home")<hr class="show-hr"/>
+                            </li>
+                <li>@Html.ActionLink("关于我们", "Index", "My")<hr class="show-hr" /></li>
+                <li>@Html.ActionLink("新闻中心", "Index", "News")<hr class="show-hr" /></li>
+                <li>@Html.ActionLink("招商加盟", "Index", "Join")<hr class="show-hr" /></li>
+                <li>@Html.ActionLink("工程案例", "Index", "Case")<hr class="show-hr" /></li>
+                <li>@Html.ActionLink("联系我们", "Index", "Contact")<hr class="show-hr" /></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+</div>
+<script>
+    $(function () {
+        $('.titl ul li').hover(function () {
+            var c = $(this).index();
+            $('.show-hr').eq(c).css({ 'display': 'block', 'width': '70px', 'transition': '2s','opacity':'0.5', })
+        }, function () { $('.show-hr').css('display', 'none') })
+    })
+</script>

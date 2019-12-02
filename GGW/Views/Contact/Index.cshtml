@@ -1,0 +1,324 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+<meta name="keywords" content="百度地图,百度地图API，百度地图自定义工具，百度地图所见即所得工具" />
+<meta name="description" content="百度地图API自定义地图，帮助用户在可视化操作下生成百度地图" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/jq/jquery.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<style type="text/css">
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .iw_poi_title {
+        color: #CC5522;
+        font-size: 14px;
+        font-weight: bold;
+        overflow: hidden;
+        padding-right: 13px;
+        white-space: nowrap
+    }
+
+    .iw_poi_content {
+        font: 12px arial,sans-serif;
+        overflow: visible;
+        padding-top: 4px;
+        white-space: -moz-pre-wrap;
+        word-wrap: break-word
+    }
+</style>
+<script type="text/javascript" src="http://api.map.baidu.com/api?key=&v=1.1&services=true"></script>
+
+
+
+<style>
+    #con {
+        width: 100%;
+        height: 460px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .item {
+        position: absolute;
+    }
+
+    #tabs {
+        position: absolute;
+        right: 30px;
+        bottom: 20px;
+        list-style: none;
+    }
+
+    .tab {
+        float: left;
+        margin-right: 10px;
+        width: 6px;
+        height: 6px;
+        border: 3px solid rgba(184,178,182,.8);
+        border-radius: 50%;
+        background: #989196;
+        cursor: pointer;
+    }
+
+    .active {
+        background: #fff;
+        border-color: #999497;
+    }
+
+    .btn {
+        position: absolute;
+        top: 50%;
+        margin-top: -35px;
+        width: 40px;
+        height: 70px;
+        color: #d6d3d5;
+        font-size: 36px;
+        line-height: 70px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            background-color: rgba(184,178,182,.8);
+            color: #fff;
+        }
+
+    .prev {
+        position: absolute;
+        left: 0px;
+        border-radius: 0 5px 5px 0;
+    }
+
+    .next {
+        position: absolute;
+        right: 0;
+        border-radius: 5px 0 0 5px;
+    }
+    .col-3 ul {
+        list-style: none
+    }
+
+        .col-3 ul li {
+            height: 40px;
+            width: 130px;
+            line-height: 40px;
+            text-align:center;
+        }
+        .col-3 ul li a:hover{
+            text-decoration:none;
+        }
+</style>
+
+
+<div id="con">
+    <a class="item" href="#"><img src="~/image/banner-1.jpg" style="width: 100%;height: 460px" /></a>
+    <a class="item" href="#"><img src="~/image/banner-2.jpg" style="width: 100%;height: 460px" /></a>
+
+    <div class="btn prev" style="line-height:50px;">&lt;</div>
+    <div class="btn next" style="line-height:50px;">&gt;</div>
+
+    <ul id="tabs">
+        <li class="tab active"></li>
+        <li class="tab"></li>
+    </ul>
+</div>
+
+
+<div class="container-fluid" style="background-color:#eae3e3;padding-top:20px;padding-bottom:20px;">
+    <div class="row">
+        <div class="col-3" style="padding-left:120px;">
+            <ul>
+                <li style="background-color:rgba(255, 200, 237, 0.80);border-radius:10px;font-size:24px;">@Html.ActionLink("联系我们", "Index", "Contact")</li>
+                <li>@Html.ActionLink("在线反馈", "feedback", "Contact")</li>
+            </ul>
+        </div>
+        <div class="col-9" style="padding-left:120px;">
+            <p><span style="font-size:16px;"></span>电话：0760-22517081</p><p>传真：0760-86744123 <br /></p><p>内部管理：
+            @Html.ActionLink("点击进入","index","Admin")
+            <br /></p><p>地址：中国某省某市中心广场王府井B座16号 <br /></p>
+
+                                                                                                                                          <div>
+                                                                                                                                              <!--百度地图容器-->
+                                                                                                                                              <div style="width:697px;height:550px;border:#ccc solid 1px;" id="dituContent"></div>
+                                 <script type="text/javascript">
+                                                                                                                                                  //创建和初始化地图函数：
+                                                                                                                                                  function initMap() {
+                                                                                                                                                      createMap();//创建地图
+                                                                                                                                                      setMapEvent();//设置地图事件
+                                                                                                                                                      addMapControl();//向地图添加控件
+                                                                                                                                                      addMarker();//向地图中添加marker
+                                                                                                                                                  }
+
+                                                                                                                                                  //创建地图函数：
+                                                                                                                                                  function createMap() {
+                                                                                                                                                      var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
+                                                                                                                                                      var point = new BMap.Point(113.159822, 27.845009);//定义一个中心点坐标
+                                                                                                                                                      map.centerAndZoom(point, 18);//设定地图的中心点和坐标并将地图显示在地图容器中
+                                                                                                                                                      window.map = map;//将map变量存储在全局
+                                                                                                                                                  }
+
+                                                                                                                                                  //地图事件设置函数：
+                                                                                                                                                  function setMapEvent() {
+                                                                                                                                                      map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+                                                                                                                                                      map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+                                                                                                                                                      map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+                                                                                                                                                      map.enableKeyboard();//启用键盘上下左右键移动地图
+                                                                                                                                                  }
+
+                                                                                                                                                  //地图控件添加函数：
+                                                                                                                                                  function addMapControl() {
+                                                                                                                                                      //向地图中添加缩放控件
+                                                                                                                                                      var ctrl_nav = new BMap.NavigationControl({ anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_ZOOM });
+                                                                                                                                                      map.addControl(ctrl_nav);
+                                                                                                                                                      //向地图中添加缩略图控件
+                                                                                                                                                      var ctrl_ove = new BMap.OverviewMapControl({ anchor: BMAP_ANCHOR_BOTTOM_RIGHT, isOpen: 1 });
+                                                                                                                                                      map.addControl(ctrl_ove);
+                                                                                                                                                      //向地图中添加比例尺控件
+                                                                                                                                                      var ctrl_sca = new BMap.ScaleControl({ anchor: BMAP_ANCHOR_BOTTOM_LEFT });
+                                                                                                                                                      map.addControl(ctrl_sca);
+                                                                                                                                                  }
+
+                                                                                                                                                  //标注点数组
+                                                                                                                                                  var markerArr = [{ title: "公司位置", content: "我的备注", point: "113.160302|27.844802", isOpen: 0, icon: { w: 21, h: 21, l: 0, t: 0, x: 6, lb: 5 } }
+                                                                                                                                                  ];
+                                                                                                                                                  //创建marker
+                                                                                                                                                  function addMarker() {
+                                                                                                                                                      for (var i = 0; i < markerArr.length; i++) {
+                                                                                                                                                          var json = markerArr[i];
+                                                                                                                                                          var p0 = json.point.split("|")[0];
+                                                                                                                                                          var p1 = json.point.split("|")[1];
+                                                                                                                                                          var point = new BMap.Point(p0, p1);
+                                                                                                                                                          var iconImg = createIcon(json.icon);
+                                                                                                                                                          var marker = new BMap.Marker(point, { icon: iconImg });
+                                                                                                                                                          var iw = createInfoWindow(i);
+                                                                                                                                                          var label = new BMap.Label(json.title, { "offset": new BMap.Size(json.icon.lb - json.icon.x + 10, -20) });
+                                                                                                                                                          marker.setLabel(label);
+                                                                                                                                                          map.addOverlay(marker);
+                                                                                                                                                          label.setStyle({
+                                                                                                                                                              borderColor: "#808080",
+                                                                                                                                                              color: "#333",
+                                                                                                                                                              cursor: "pointer"
+                                                                                                                                                          });
+
+                                                                                                                                                          (function () {
+                                                                                                                                                              var index = i;
+                                                                                                                                                              var _iw = createInfoWindow(i);
+                                                                                                                                                              var _marker = marker;
+                                                                                                                                                              _marker.addEventListener("click", function () {
+                                                                                                                                                                  this.openInfoWindow(_iw);
+                                                                                                                                                              });
+                                                                                                                                                              _iw.addEventListener("open", function () {
+                                                                                                                                                                  _marker.getLabel().hide();
+                                                                                                                                                              })
+                                                                                                                                                              _iw.addEventListener("close", function () {
+                                                                                                                                                                  _marker.getLabel().show();
+                                                                                                                                                              })
+                                                                                                                                                              label.addEventListener("click", function () {
+                                                                                                                                                                  _marker.openInfoWindow(_iw);
+                                                                                                                                                              })
+                                                                                                                                                              if (!!json.isOpen) {
+                                                                                                                                                                  label.hide();
+                                                                                                                                                                  _marker.openInfoWindow(_iw);
+                                                                                                                                                              }
+                                                                                                                                                          })()
+                                                                                                                                                      }
+                                                                                                                                                  }
+                                                                                                                                                  //创建InfoWindow
+                                                                                                                                                  function createInfoWindow(i) {
+                                                                                                                                                      var json = markerArr[i];
+                                                                                                                                                      var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.title + "'>" + json.title + "</b><div class='iw_poi_content'>" + json.content + "</div>");
+                                                                                                                                                      return iw;
+                                                                                                                                                  }
+                                                                                                                                                  //创建一个Icon
+                                                                                                                                                  function createIcon(json) {
+                                                                                                                                                      var icon = new BMap.Icon("http://app.baidu.com/map/images/us_mk_icon.png", new BMap.Size(json.w, json.h), { imageOffset: new BMap.Size(-json.l, -json.t), infoWindowOffset: new BMap.Size(json.lb + 5, 1), offset: new BMap.Size(json.x, json.h) })
+                                                                                                                                                      return icon;
+                                                                                                                                                  }
+
+                                                                                                                                                  initMap();//创建和初始化地图
+                                                                                                                                              </script>
+
+                                                                                                                                          </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+    var i = 0;
+    var timer;
+
+    //用jquery方法设置第一张图片显示，其余隐藏
+    $('.item').eq(0).show().siblings('.item').hide();
+
+    //调用showTime()函数（轮播函数）
+    showTime();
+
+    //当鼠标经过下面的数字时，触发两个事件（鼠标悬停和鼠标离开）
+    $('.tab').hover(function () {
+        //获取当前i的值，并显示，同时还要清除定时器
+        i = $(this).index();
+        Show();
+        clearInterval(timer);
+    }, function () {
+        //
+        showTime();
+    });
+
+    //鼠标点击左侧的箭头
+    $('.prev').click(function () {
+        clearInterval(timer);
+        if (i == 0) {
+            i = 2;//注意此时i的值
+        }
+        i--;
+        Show();
+        showTime();
+    });
+
+    //鼠标点击右侧的箭头
+    $('.next').click(function () {
+        clearInterval(timer);
+        if (i == 2) {
+            i = 1;//注意此时i的值
+        }
+        i++;
+        Show();
+        showTime();
+    });
+
+
+    //创建一个showTime函数
+    function showTime() {
+        //定时器
+        timer = setInterval(function () {
+            //调用一个Show()函数
+            Show();
+            i++;
+            //当图片是最后一张的后面时，设置图片为第一张
+            if (i == 3) {
+                i = 0;
+            }
+        }, 2000);
+    }
+
+
+    //创建一个Show函数
+    function Show() {
+        //在这里可以用其他jquery的动画
+        $('.item').eq(i).fadeIn(300).siblings('.item').fadeOut(300);
+
+        //给.tab创建一个新的Class为其添加一个新的样式，并且要在css代码中设置该样式
+        $('.tab').eq(i).addClass('active').siblings('.tab').removeClass('active');
+
+        }
+    })
+</script>

@@ -1,0 +1,96 @@
+﻿@model IEnumerable<GGW.Models.adminM>
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+
+    <link href="~/icon/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/icon/js/bootstrap.min.js"></script>
+    <script src="~/icon/js/jquery.min.js"></script>
+
+    <div class="container-fluid" style="display:none;z-index:9998;background-color:#3d3d3d;opacity:0.5;position:absolute;" id="show">
+    </div>
+    <div class="container-fluid">
+        <div class="row" style="padding-top:10px;border-bottom:1px solid #e1e1e1">
+            <a href="@Url.Action("Index","Admin")"><i class="glyphicon glyphicon-home"></i>&nbsp;首页</a><i style="color:blue">>>></i><a href="@Url.Action("Index","Admin")"><i class=""></i>查看个人信息</a>
+        </div>
+        <div class="row" style="padding-top:10px;padding-bottom:10px;">
+            <a href="#" class="btn btn-sm btn-warning" id="show-box">添加</a>
+        </div>
+            <div class="row" style="position:absolute;z-index:9999;" id="box">
+                <div class="modal-body">
+                    <div class="form-group" style="z-index:9999">
+                        <label>用户名</label>
+                        <input type="text" class="form-control" placeholder="输入用户名" id="name">
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="text" class="form-control" placeholder="输入密码" id="pwd">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button id="hide" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span>关闭</button>
+                        <button id="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <table id="sel_datatable" class="table table-hover">
+                <tr>
+                    <th>编号</th>
+                    <th>用户名</th>
+                    <th>密码</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.adminID</td>
+                        <td>@item.adminName</td>
+                        <td>@item.adminPwd</td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <script>
+            $(function () {
+                $('#box').hide();
+                var win_we = $(window).width();
+                var win_he = $(window).height();
+                $('#show-box').click(function () {
+                    $('#show').css({ 'display': 'block', 'width': win_we + 'px', 'height': win_he + 'px', 'margin-left': '-350px', 'margin-top': '-55px' });
+                    $('#box').show();
+                    $('#box').css({ 'width': win_we / 2 + 'px', 'height': win_he / 2 + 'px', 'background-color': '#fff', 'border-radius': '10px' });
+                });
+                $("#hide").click(function () {
+                    $('#show').hide();
+                    $('#box').hide();
+                });
+                $('#submit').click(function () {
+                    //alert("提交按钮")
+                    var text1 = $('#name').val();
+                    var text2 = $('#pwd').val();
+                    $.ajax({
+                        url: '/Admin/insert',
+                        type: 'post',
+                        data: { username: text1, userpwd: text2 },
+                        success: function (data) {
+                            if (data.s == "1") {
+                                alert("插入的数据在数据库中已存在！！！")
+                            }
+                            else if (data.s == "0") {
+                                alert("输入的数据不能为空！！！")
+                            }
+                            else if (data.s == "ok") {
+                                alert("数据已成功插入！！！");
+                                window.location.reload();
+                            }
+                            else if (data.s == "00") {
+                                alert("用户名已注册！！！")
+                            }
+                        }
+                    })
+                })
+            })
+        </script>
